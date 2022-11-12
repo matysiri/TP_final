@@ -7,3 +7,4 @@ services:
       - 3000:3000
   stream:
     image: stream-python:v1
+     
