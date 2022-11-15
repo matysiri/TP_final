@@ -1,13 +1,7 @@
+import mysql.connector
 import datetime
-import json
-import logging
 import random
 import time
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s %(levelname)s %(module)s:%(funcName)s: %(message)s",
-)
 
 NORMAL_PARAMS = (10, 20, 2.0)
 ANOMALY_PARAMS = (100, 120, 30.0)
@@ -33,12 +27,32 @@ def get_sensor_record(name, anomaly_chance):
     return response
 
 name     = 'tp_linux'
-chance   = 0.06
+chance   = 0.09
 wait     = 500
 wait_std = 100
+contador = 0
 
-while True:
-    data = json.dumps(get_sensor_record(name, chance))
+connection = mysql.connector.connect(
+    user='root', password='root', host='mysql', port='3306', database='db'
+)
+
+print('Connection succesfull')
+
+cursor = connection.cursor()
+
+query = """
+INSERT INTO stream_table (event_timestamp,sensor_name,sensor_value,is_anomaly) VALUES (%s,%s,%s,%s)
+"""
+
+while contador<1001:
+    data = get_sensor_record(name, chance)
     wait_ms = abs(random.normalvariate(wait, wait_std))
     time.sleep(wait_ms / 1000)
-    logging.info(f"{data}")
+    print(data)
+    values = (data['event_timestamp'],data['sensor_name'],data['sensor_value'],data['is_anomaly'])
+    cursor.execute(query,values)
+    connection.commit()
+    print(f'Record {contador} inserted')
+    contador += 1
+
+
