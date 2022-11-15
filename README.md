@@ -10,6 +10,4 @@ Los programas son iniciados con docker-compose (con imagenes oficiales de docker
 
 En el siguiente diagrama, se puede observar la arquitectura a alto nivel utilizada
 
-![Screenshot][def]
-
-[def]: ./resources/images/arquitectura.png
+![arch-diagram](resources/images/arquitectura.png)
