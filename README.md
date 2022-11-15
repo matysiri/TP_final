@@ -6,4 +6,3 @@ Todos estos datos generados por la app, son guardados en una base de datos mySQL
 
 Los programas son iniciados con docker-compose (con imagenes oficiales de dockerhub).
 
-
